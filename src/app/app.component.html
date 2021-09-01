@@ -1,15 +1,43 @@
-<div class="page-padding">
-  <div class="backing bg-light">
-    <nav class="navbar navbar-expand-lg navbar-expand-md navbar-light bg-light">
-      <a class="navbar-brand">ЕИС</a>
-        <ul ngbNav class="navbar-nav">
-          <li ngbNavItem class="nav-item active">
-            <a ngbNavLink class="nav-link">Проекты <span class="sr-only">(current)</span></a>
+<nz-layout class="app-layout">
+  <nz-sider class="menu-sidebar"
+            nzCollapsible
+            nzWidth="256px"
+            nzBreakpoint="md"
+            [(nzCollapsed)]="isCollapsed"
+            [nzTrigger]="null">
+    <div class="sidebar-logo">
+      <a href="#" target="_blank">
+        <h1>Единое информационное пространство</h1>
+      </a>
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li nz-submenu nzOpen nzTitle="Меню" nzIcon="menu">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/projects">Проекты</a>
           </li>
-          <li ngbNavItem class="nav-item">
-            <a ngbNavLink class="nav-link">Стадии</a>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/process">Ход проекта</a>
           </li>
         </ul>
-    </nav>
-  <router-outlet></router-outlet>
-</div>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+            <i class="trigger"
+               nz-icon
+               [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            ></i>
+        </span>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

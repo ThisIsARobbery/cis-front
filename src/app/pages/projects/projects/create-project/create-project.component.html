@@ -1,0 +1,36 @@
+<nz-breadcrumb>
+  <nz-breadcrumb-item>ЕИП</nz-breadcrumb-item>
+  <nz-breadcrumb-item>
+    <a [routerLink]="'/projects'">Список проектов</a>
+  </nz-breadcrumb-item>
+  <nz-breadcrumb-item>
+    <a>Создание проекта</a>
+  </nz-breadcrumb-item>
+</nz-breadcrumb>
+<div class="row" class="vertical-spaced-row">
+  <div class="col-md-6">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="projectName">Название проекта</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Это поле обязательно.">
+          <input nz-input formControlName="projectName" id="projectName" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="projectDescription">Описание проекта</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <textarea
+            nz-input
+            id="projectDescription"
+            formControlName="projectDescription"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <button nz-button nzType="primary" (click)="submitForm()">Сохранить</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </div>
+</div>

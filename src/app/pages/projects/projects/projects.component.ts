@@ -20,6 +20,10 @@ export class ProjectsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.refreshProjectList();
+  }
+
+  refreshProjectList(): void {
     this.projectsService.getProjects().subscribe((projects) => {
       this.projects = projects;
     });
@@ -44,6 +48,8 @@ export class ProjectsComponent implements OnInit {
 
   deleteProject(projectId: string): void {
     console.log("DELETE ", projectId);
-    // this.projectsService.deleteProject();
+    this.projectsService.deleteProject(projectId).subscribe((deleteResult: any) => {
+      this.refreshProjectList();
+    });
   }
 }

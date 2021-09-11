@@ -18,4 +18,8 @@ export class ProjectsService {
   createProject(projectData: any): Observable<any> {
     return this.http.post(`${environment.apiUrl}/projects`, projectData);
   }
+
+  deleteProject(projectId: string): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/projects/${projectId}`);
+  }
 }

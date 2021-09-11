@@ -12,7 +12,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
-
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,8 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     NzButtonModule,
     NzBreadCrumbModule,
     NzFormModule,
-    NzInputModule
+    NzInputModule,
+    NzModalModule
   ]
 })
 export class ProjectsModule { }

@@ -10,14 +10,15 @@
   </button>
 </nz-space>
 <nz-list nzItemLayout="horizontal" [nzLoading]="loading" nzBordered>
-  <nz-list-item *ngFor="let item of data">
+  <nz-list-item *ngFor="let project of projects">
     <nz-list-item-meta
-      nzDescription="Описание проекта"
+      [nzDescription]="project.description"
     >
       <nz-list-item-meta-title>
-        <a href="https://ng.ant.design">{{ item }}</a>
+        <a href="#">{{ project.name }}</a>
       </nz-list-item-meta-title>
     </nz-list-item-meta>
+    <button nz-button nz-type="danger" (click)="this.showDeleteConfirm(project._id)">Удалить</button>
   </nz-list-item>
-  <nz-list-empty *ngIf="data.length === 0"></nz-list-empty>
+  <nz-list-empty *ngIf="projects.length === 0"></nz-list-empty>
 </nz-list>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ProjectsService } from '../../projects.service';
 
 @Component({
   templateUrl: './create-project.component.html',
@@ -12,7 +13,8 @@ export class CreateProjectComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private projectsService: ProjectsService,
   ) { }
 
   ngOnInit(): void {
@@ -27,8 +29,10 @@ export class CreateProjectComponent implements OnInit {
       name: this.validateForm.value.projectName,
       description: this.validateForm.value.projectDescription
     };
-    console.log(createProjectPayload);
-    this.router.navigate(['/projects']);
+    this.projectsService.createProject(createProjectPayload).subscribe((res) => {
+      console.log(res);
+      this.router.navigate(['/projects']);
+    })
   }
 
 }

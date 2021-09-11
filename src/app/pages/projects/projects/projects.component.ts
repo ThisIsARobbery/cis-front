@@ -1,21 +1,49 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ProjectsService } from '../projects.service';
+
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent implements OnInit {
-  data = [1,2,3,4,5];
   loading = false;
+  projects: any[] = [];
+
+
   constructor(
-    private router: Router
+    private router: Router,
+    private projectsService: ProjectsService,
+    private modal: NzModalService,
   ) { }
 
   ngOnInit(): void {
+    this.projectsService.getProjects().subscribe((projects) => {
+      this.projects = projects;
+    });
   }
 
   createProject(): void {
     this.router.navigate(['/projects/create'])
+  }
+
+  showDeleteConfirm(projectId: string): void {
+    this.modal.confirm({
+      nzTitle: 'Вы действительно хотите удалить проект?',
+      nzContent: '<b style="color: red">Прогресс по проекту будет утерян.</b>',
+      nzOkText: 'Удалить',
+      nzOkType: 'primary',
+      nzOkDanger: true,
+      nzOnOk: () => this.deleteProject(projectId),
+      nzCancelText: 'Отмена',
+      nzOnCancel: () => {}
+    })
+  }
+
+  deleteProject(projectId: string): void {
+    console.log("DELETE ", projectId);
+    // this.projectsService.deleteProject();
   }
 }

@@ -18,7 +18,7 @@
         <a href="#">{{ project.name }}</a>
       </nz-list-item-meta-title>
     </nz-list-item-meta>
-    <button nz-button nz-type="danger" (click)="this.showDeleteConfirm(project._id)">Удалить</button>
+    <button nz-button (click)="this.showDeleteConfirm(project._id)" nzDanger>Удалить</button>
   </nz-list-item>
   <nz-list-empty *ngIf="projects.length === 0"></nz-list-empty>
 </nz-list>

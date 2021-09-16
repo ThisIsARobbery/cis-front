@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { StageResultsService } from '../stage-results.service';
 
 @Component({
   templateUrl: './stage-results.component.html',
   styleUrls: ['./stage-results.component.scss']
 })
 export class StageResultsComponent implements OnInit {
+
+  projectId: string = '';
 
   testData = [
     {
@@ -55,14 +59,39 @@ export class StageResultsComponent implements OnInit {
     priority: 'high'
   };
 
+  stageResults: [] = [];
+
   currentStageForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private stageResultsService: StageResultsService,
+  ) { }
 
   ngOnInit(): void {
     this.currentStageForm = this.fb.group({
       note: null,
     });
+    this.route.params.subscribe((paramMap) => {
+      this.projectId = paramMap.projectId;
+      this.getStageResults();
+      if (this.stageResults.length === 0) {
+        this.getNextStage(0);
+      }
+    })
+  }
+
+  getStageResults(): void {
+    this.stageResultsService.getProjectStageResults(this.projectId).subscribe((stageResults) => {
+      this.stageResults = stageResults;
+    });
+  }
+
+  getNextStage(currentStageIndex: number): void {
+    this.stageResultsService.getNextStage(currentStageIndex).subscribe((nextStage) => {
+      this.currentStage = nextStage;
+    })
   }
 
   submitCurrentStage(): void {

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { StageResultsComponent } from './stage-results/stage-results.component';
 
 const routes: Routes = [
-  { path: 'process', component: StageResultsComponent }
+  { path: 'process/:projectId', component: StageResultsComponent }
 ];
 
 @NgModule({

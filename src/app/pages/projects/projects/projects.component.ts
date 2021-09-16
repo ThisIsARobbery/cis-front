@@ -46,6 +46,10 @@ export class ProjectsComponent implements OnInit {
     })
   }
 
+  goToProject(projectId: string): void {
+    this.router.navigate(['/process', projectId]);
+  }
+
   deleteProject(projectId: string): void {
     console.log("DELETE ", projectId);
     this.projectsService.deleteProject(projectId).subscribe((deleteResult: any) => {

@@ -15,7 +15,7 @@
       [nzDescription]="project.description"
     >
       <nz-list-item-meta-title>
-        <a href="#">{{ project.name }}</a>
+        <a (click)="this.goToProject(project._id)">{{ project.name }}</a>
       </nz-list-item-meta-title>
     </nz-list-item-meta>
     <button nz-button (click)="this.showDeleteConfirm(project._id)" nzDanger>Удалить</button>

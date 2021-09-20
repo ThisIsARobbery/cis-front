@@ -6,11 +6,11 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 
 import { StageResultsRoutingModule } from './stage-results-routing.module';
 import { StageResultsComponent } from './stage-results/stage-results.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
-
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @NgModule({
   declarations: [
@@ -20,6 +20,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
     CommonModule,
     ReactiveFormsModule,
     StageResultsRoutingModule,
+    NzIconModule,
     NzBreadCrumbModule,
     NzCollapseModule,
     NzInputModule,

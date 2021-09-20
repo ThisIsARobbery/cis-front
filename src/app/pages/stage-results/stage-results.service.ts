@@ -21,4 +21,8 @@ export class StageResultsService {
   submitStage(stagePayload: any): Observable<any> {
     return this.http.post(`${environment.apiUrl}/stage_results`, stagePayload);
   }
+
+  updateStageResult(stageResultId: string, stageResultPayload: any): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/stage_results/${stageResultId}`, stageResultPayload);
+  }
 }

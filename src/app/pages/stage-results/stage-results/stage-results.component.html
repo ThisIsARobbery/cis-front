@@ -6,10 +6,10 @@
 </nz-breadcrumb>
 
 <div class="row stage-res-spacing">
-  <div class="col-md-6">
-    <h5>{{currentStage.number + '. ' + currentStage.title}}</h5>
+  <div [class]="'col-md-6'"  *ngIf="!this.projectFinished && this.editingStageResult === null">
+    <h5>{{(currentStage.number !== -1 ? currentStage.number + '. ' : '') + currentStage.title}}</h5>
     <p>{{currentStage.description}}</p>
-    <form nz-form [formGroup]="currentStageForm" (ngSubmit)="submitCurrentStage()" *ngIf="!this.projectFinished">
+    <form nz-form [formGroup]="currentStageForm" (ngSubmit)="submitCurrentStage()">
       <nz-form-item>
         <nz-form-control>
           <nz-input-group>
@@ -25,12 +25,34 @@
       <button nz-button class="stage-result-form-btn" [nzType]="'primary'">Сохранить</button>
     </form>
   </div>
+  <div class="col-md-6" *ngIf="this.editingStageResult !== null">
+    <ng-container *ngIf="this.editingStageResult.stage">
+      <h5>{{(this.editingStageResult.stage.number !== -1 ? this.editingStageResult.stage.number + '. ' : '') + this.editingStageResult.stage.title}}</h5>
+      <p>{{this.editingStageResult.stage.description}}</p>
+    </ng-container>
+    <form nz-form [formGroup]="editingStageResultForm" (ngSubmit)="submitEditingForm()"  >
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group>
+            <textarea
+              class="stage-result-textarea"
+              nz-input formControlName="note"
+              placeholder="Редактировать результат стадии"
+              rows="5"
+            ></textarea>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <button nz-button class="stage-result-form-btn" [nzType]="'primary'">Сохранить</button>
+    </form>
+  </div>
   <div class="col-md-6">
     <nz-collapse nzAccordion>
-      <nz-collapse-panel *ngFor="let stageRes of stageResults" [nzHeader]="stageRes.stage.number + '. ' + stageRes.stage.title" [nzActive]="stageRes.active" [nzExtra]="actorBadge">
-        <ng-template #actorBadge>
-          <b>Исполнитель: {{ stageRes.stage.actor }}</b>
+      <nz-collapse-panel *ngFor="let stageRes of stageResults" [nzHeader]="stageRes.stage.number + '. ' + stageRes.stage.title" [nzActive]="stageRes.active" [nzExtra]="viewStageButton">
+        <ng-template #viewStageButton>
+          <button nz-button (click)="this.goTo(stageRes)"><i nz-icon nzType="eye" nzTheme="outline"></i></button>
         </ng-template>
+        <p><b>Исполнитель: {{ stageRes.stage.actor }}</b></p>
         <p>{{ stageRes.note }}</p>
       </nz-collapse-panel>
     </nz-collapse>

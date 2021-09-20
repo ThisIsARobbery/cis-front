@@ -8,6 +8,7 @@
 <div class="row stage-res-spacing">
   <div [class]="'col-md-6'"  *ngIf="!this.projectFinished && this.editingStageResult === null">
     <h5>{{(currentStage.number !== -1 ? currentStage.number + '. ' : '') + currentStage.title}}</h5>
+    <p><b>Исполнитель: {{ currentStage.actor }}</b></p>
     <p>{{currentStage.description}}</p>
     <form nz-form [formGroup]="currentStageForm" (ngSubmit)="submitCurrentStage()">
       <nz-form-item>
@@ -16,7 +17,7 @@
             <textarea
               class="stage-result-textarea"
               nz-input formControlName="note"
-              placeholder="Результат стадии"
+              placeholder="Результат стадии (тестовая заметка)"
               rows="5"
             ></textarea>
           </nz-input-group>
@@ -28,6 +29,7 @@
   <div class="col-md-6" *ngIf="this.editingStageResult !== null">
     <ng-container *ngIf="this.editingStageResult.stage">
       <h5>{{(this.editingStageResult.stage.number !== -1 ? this.editingStageResult.stage.number + '. ' : '') + this.editingStageResult.stage.title}}</h5>
+      <p><b>Исполнитель: {{ this.editingStageResult.stage.actor }}</b></p>
       <p>{{this.editingStageResult.stage.description}}</p>
     </ng-container>
     <form nz-form [formGroup]="editingStageResultForm" (ngSubmit)="submitEditingForm()"  >
@@ -50,7 +52,7 @@
     <nz-collapse nzAccordion>
       <nz-collapse-panel *ngFor="let stageRes of stageResults" [nzHeader]="stageRes.stage.number + '. ' + stageRes.stage.title" [nzActive]="stageRes.active" [nzExtra]="viewStageButton">
         <ng-template #viewStageButton>
-          <button nz-button (click)="this.goTo(stageRes)"><i nz-icon nzType="eye" nzTheme="outline"></i></button>
+          <button nz-button (click)="this.goTo(stageRes)"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
         </ng-template>
         <p><b>Исполнитель: {{ stageRes.stage.actor }}</b></p>
         <p>{{ stageRes.note }}</p>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { StageResult } from 'src/app/types/stage-result.type';
+import { Stage } from 'src/app/types/stage.type';
 import { StageResultsService } from '../stage-results.service';
 
 @Component({
@@ -50,7 +52,12 @@ export class StageResultsComponent implements OnInit {
     },
   ];
 
-  currentStage = {
+  // currentStageIndex: number = -1;
+
+  currentStageResultIndex: number = -1;
+
+  currentStage: Stage = {
+    _id: '1',
     number: 5,
     title: 'Stage 5',
     description: 'Stage 5 description',
@@ -59,7 +66,9 @@ export class StageResultsComponent implements OnInit {
     priority: 'high'
   };
 
-  stageResults: [] = [];
+  projectFinished = false;
+
+  stageResults: StageResult[] = [];
 
   currentStageForm!: FormGroup;
 
@@ -75,14 +84,42 @@ export class StageResultsComponent implements OnInit {
     });
     this.route.params.subscribe((paramMap) => {
       this.projectId = paramMap.projectId;
-      this.getStageResults();
-      if (this.stageResults.length === 0) {
-        this.getNextStage(0);
-      }
+      this.stageResultsService.getProjectStageResults(this.projectId).subscribe((stageResults: StageResult[]) => {
+        if (!(stageResults.length === 0)) {
+          this.stageResults = stageResults;
+          this.currentStageResultIndex = this.stageResults.length - 1;
+          if (this.stageResults.length === 0) {
+            this.getNextStage(0);
+          } else {
+            this.getNextStage(this.stageResults[this.stageResults.length - 1].stage.number);
+          }
+        } else {
+          this.projectFinished = true;
+        }
+      });
     })
   }
 
-  getStageResults(): void {
+  goBack(): void {
+    if (!(this.currentStageResultIndex === 0)) {
+      this.currentStageResultIndex -= 1;
+    }
+  }
+
+  goForward(): void {
+    if (!(this.currentStageResultIndex === this.stageResults.length - 1)) {
+      this.currentStageResultIndex += 1;
+    }
+  }
+
+  goTo(stageResult: StageResult): void {
+    const goToStageResultIndex = this.stageResults.indexOf(stageResult);
+    if (goToStageResultIndex >= 0 && goToStageResultIndex < this.stageResults.length) {
+      this.currentStageResultIndex = goToStageResultIndex;
+    }
+  }
+
+  refreshStageResults(): void {
     this.stageResultsService.getProjectStageResults(this.projectId).subscribe((stageResults) => {
       this.stageResults = stageResults;
     });
@@ -90,7 +127,11 @@ export class StageResultsComponent implements OnInit {
 
   getNextStage(currentStageIndex: number): void {
     this.stageResultsService.getNextStage(currentStageIndex).subscribe((nextStage) => {
-      this.currentStage = nextStage;
+      if (nextStage === null) {
+        this.projectFinished = true;
+      } else {
+        this.currentStage = nextStage;
+      }
     })
   }
 
@@ -101,6 +142,16 @@ export class StageResultsComponent implements OnInit {
         this.currentStageForm.controls[i].updateValueAndValidity();
       }
     }
+    const stagePayload = {
+      stage: this.currentStage._id,
+      isDone: true,
+      note: this.currentStageForm.value.note,
+      project: this.projectId
+    };
+    this.stageResultsService.submitStage(stagePayload).subscribe(() => {
+      this.refreshStageResults();
+      this.getNextStage(this.currentStage.number);
+    })
   }
 
 }

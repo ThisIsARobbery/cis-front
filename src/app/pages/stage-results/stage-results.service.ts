@@ -17,4 +17,8 @@ export class StageResultsService {
   getNextStage(currentStageIndex: number): Observable<any> {
     return this.http.post(`${environment.apiUrl}/stages/next`, { index: currentStageIndex });
   }
+
+  submitStage(stagePayload: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/stage_results`, stagePayload);
+  }
 }

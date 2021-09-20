@@ -9,7 +9,7 @@
   <div class="col-md-6">
     <h5>{{currentStage.number + '. ' + currentStage.title}}</h5>
     <p>{{currentStage.description}}</p>
-    <form nz-form [formGroup]="currentStageForm" (ngSubmit)="submitCurrentStage()">
+    <form nz-form [formGroup]="currentStageForm" (ngSubmit)="submitCurrentStage()" *ngIf="!this.projectFinished">
       <nz-form-item>
         <nz-form-control>
           <nz-input-group>
@@ -27,11 +27,11 @@
   </div>
   <div class="col-md-6">
     <nz-collapse nzAccordion>
-      <nz-collapse-panel *ngFor="let stageRes of testData" [nzHeader]="stageRes.number + '. ' + stageRes.title" [nzActive]="stageRes.active" [nzExtra]="actorBadge">
+      <nz-collapse-panel *ngFor="let stageRes of stageResults" [nzHeader]="stageRes.stage.number + '. ' + stageRes.stage.title" [nzActive]="stageRes.active" [nzExtra]="actorBadge">
         <ng-template #actorBadge>
-          <b>Исполнитель: {{ stageRes.actor}}</b>
+          <b>Исполнитель: {{ stageRes.stage.actor }}</b>
         </ng-template>
-        <p>{{ stageRes.description }}</p>
+        <p>{{ stageRes.note }}</p>
       </nz-collapse-panel>
     </nz-collapse>
   </div>

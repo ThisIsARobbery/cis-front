@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build:mac": "rm -rf ../cis-back/front && mkdir ../cis-back/front && ng build --prod && mv dist/cis/* ../cis-back/front/"
   },
   "private": true,
   "dependencies": {

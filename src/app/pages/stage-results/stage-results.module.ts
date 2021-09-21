@@ -11,6 +11,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     NzCollapseModule,
     NzInputModule,
     NzButtonModule,
-    NzFormModule
+    NzFormModule,
+    NzModalModule
   ]
 })
 export class StageResultsModule { }

@@ -13,6 +13,11 @@ export class StageResultsComponent implements OnInit {
 
   projectId: string = '';
 
+  optionsModalVisible = false;
+
+  stageIsConditional = false;
+  stageOptions: any = [];
+
   currentStageResultIndex: number = -1;
 
   currentStage: Stage = {
@@ -103,6 +108,24 @@ export class StageResultsComponent implements OnInit {
         this.projectFinished = true;
       } else {
         this.currentStage = nextStage;
+        if (this.currentStage.isConditional) {
+          this.stageIsConditional = true;
+          this.stageOptions = this.currentStage.options;
+        }
+      }
+    })
+  }
+
+  getNextStageByRef(stageRef: string): void {
+    this.stageResultsService.getStageById(stageRef).subscribe((nextStage) => {
+      if (nextStage === null) {
+        this.projectFinished = true;
+      } else {
+        this.currentStage = nextStage;
+        if (this.currentStage.isConditional) {
+          this.stageIsConditional = true;
+          this.stageOptions = this.currentStage.options;
+        }
       }
     })
   }
@@ -120,11 +143,15 @@ export class StageResultsComponent implements OnInit {
       note: this.currentStageForm.value.note,
       project: this.projectId
     };
-    this.stageResultsService.submitStage(stagePayload).subscribe(() => {
-      this.refreshStageResults();
-      this.getNextStage(this.currentStage.number);
-      this.cleanStageForm();
-    })
+    if (this.stageIsConditional) {
+      this.openOptionsModal();
+    } else {
+      this.stageResultsService.submitStage(stagePayload).subscribe(() => {
+        this.refreshStageResults();
+        this.getNextStage(this.currentStage.number);
+        this.cleanStageForm();
+      })
+    }
   }
 
   submitEditingForm(): void {
@@ -151,4 +178,34 @@ export class StageResultsComponent implements OnInit {
     this.currentStageForm.reset();
   }
 
+  openOptionsModal(): void {
+    this.optionsModalVisible = true;
+  }
+
+  cancelOptionsModal(): void {
+    this.optionsModalVisible = false;
+  }
+
+  submitOptionsModal(stageRef: string): void {
+    for (const i in this.currentStageForm.controls) {
+      if (this.currentStageForm.controls.hasOwnProperty(i)) {
+        this.currentStageForm.controls[i].markAsDirty();
+        this.currentStageForm.controls[i].updateValueAndValidity();
+      }
+    }
+    const stagePayload = {
+      stage: this.currentStage._id,
+      isDone: true,
+      note: this.currentStageForm.value.note,
+      project: this.projectId
+    };
+    this.stageResultsService.submitStage(stagePayload).subscribe(() => {
+      this.stageIsConditional = false;
+      this.stageOptions = [];
+      this.refreshStageResults();
+      this.getNextStageByRef(stageRef);
+      this.cleanStageForm();
+      this.cancelOptionsModal();
+    })
+  }
 }

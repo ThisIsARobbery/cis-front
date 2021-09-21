@@ -29,8 +29,7 @@ export class CreateProjectComponent implements OnInit {
       name: this.validateForm.value.projectName,
       description: this.validateForm.value.projectDescription
     };
-    this.projectsService.createProject(createProjectPayload).subscribe((res) => {
-      console.log(res);
+    this.projectsService.createProject(createProjectPayload).subscribe(() => {
       this.router.navigate(['/projects']);
     })
   }

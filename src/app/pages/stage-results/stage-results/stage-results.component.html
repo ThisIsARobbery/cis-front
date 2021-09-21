@@ -48,7 +48,7 @@
       <button nz-button class="stage-result-form-btn" [nzType]="'primary'">Сохранить</button>
     </form>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-6 scrollbox">
     <nz-collapse nzAccordion>
       <nz-collapse-panel *ngFor="let stageRes of stageResults" [nzHeader]="stageRes.stage.number + '. ' + stageRes.stage.title" [nzActive]="stageRes.active" [nzExtra]="viewStageButton">
         <ng-template #viewStageButton>
@@ -60,3 +60,23 @@
     </nz-collapse>
   </div>
 </div>
+
+<nz-modal
+  [(nzVisible)]="optionsModalVisible"
+  [nzTitle]="modalTitle"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  (nzOnCancel)="cancelOptionsModal()"
+>
+  <ng-template #modalTitle>Выберите вариант</ng-template>
+
+  <ng-template #modalContent>
+    <ng-container *ngFor="let option of this.stageOptions">
+      <button class="block-button-margin" nzBlock nz-button nzType="primary" (click)="submitOptionsModal(option.stageRef)">{{option.name}}</button>
+    </ng-container>
+  </ng-template>
+
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="cancelOptionsModal()">Отмена</button>
+  </ng-template>
+</nz-modal>

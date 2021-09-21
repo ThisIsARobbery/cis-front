@@ -51,7 +51,6 @@ export class ProjectsComponent implements OnInit {
   }
 
   deleteProject(projectId: string): void {
-    console.log("DELETE ", projectId);
     this.projectsService.deleteProject(projectId).subscribe((deleteResult: any) => {
       this.refreshProjectList();
     });

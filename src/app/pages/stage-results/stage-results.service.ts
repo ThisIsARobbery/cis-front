@@ -25,4 +25,8 @@ export class StageResultsService {
   updateStageResult(stageResultId: string, stageResultPayload: any): Observable<any> {
     return this.http.put(`${environment.apiUrl}/stage_results/${stageResultId}`, stageResultPayload);
   }
+
+  getStageById(stageId: string): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/stages/${stageId}`);
+  }
 }
